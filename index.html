@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Vocabulary Quiz</title>
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="quiz-container" id="selection-container">
+        <h1>Customize Your Quiz</h1>
+        <p class="setup-description">Select a vocabulary list to begin.</p>
+        <form id="start-quiz-form">
+            <div class="form-group">
+                <label for="vocab-list-select">Choose a Vocabulary List</label>
+                <select id="vocab-list-select"></select>
+            </div>
+            
+            <div class="form-group" id="sub-list-selector-wrapper" style="display: none;">
+                <label for="sub-list-select">Choose a Category</label>
+                <select id="sub-list-select"></select>
+            </div>
+            
+            <button type="submit">Start Quiz</button>
+        </form>
+    </div>
+
+    <div class="quiz-container" id="quiz-box">
+        <h1 id="quiz-title">French Vocabulary Quiz</h1>
+        <p id="progress-counter"></p>
+        <div id="question-area">
+            <p id="question-prompt"></p>
+            <h2 id="question-term"></h2>
+        </div>
+        <form id="answer-form">
+            <div class="input-group">
+                <!-- The only change is here: spellcheck="false" has been added -->
+                <input type="text" id="answer-input" placeholder="Type your answer..." autocomplete="off" lang="fr" autofocus spellcheck="false">
+                <button type="button" id="hint-button">Hint</button>
+                <button type="submit" id="check-button">Check</button>
+            </div>
+            <div id="accent-buttons">
+                <!-- Accent buttons will be inserted here by JavaScript -->
+            </div>
+        </form>
+        <div id="feedback-message"></div>
+        <p id="continue-prompt">Press Enter or click Continue</p>
+    </div>
+
+    <div class="quiz-container" id="completion-screen">
+        <h2>Quiz Complete!</h2>
+        <p id="final-score"></p>
+        <div id="review-section" style="display: none;">
+            <h3>Terms to Review:</h3>
+            <ul id="wrong-answers-list"></ul>
+        </div>
+        <button id="restart-button">Quiz Again</button>
+    </div>
+
+    <!-- Load vocabulary data first, then the main script that uses it -->
+    <script src="vocab.js" defer></script>
+    <script src="script.js" defer></script>
+</body>
+</html>
