@@ -24,7 +24,7 @@ const accentButtonsContainer = document.getElementById('accent-buttons');
 // --- QUIZ STATE ---
 let quizTerms = [], currentTerm = null, totalTermsInQuiz = 0, isWaitingForContinue = false, wronglyAnswered = [];
 let lastWronglyAnswered = [];
-const ACCENTS = ['à', 'â', 'é', 'è', 'ê', 'î', 'ô', 'û', 'ç'];
+let activeAccents = []; // This will be populated dynamically
 
 // --- SETUP FUNCTIONS ---
 function populateVocabListsDropdown() {
@@ -37,29 +37,39 @@ function updateSubListDropdown() {
     const selectedListKey = vocabListSelect.value;
     const selectedList = vocabLists[selectedListKey];
     
-    // Clear previous options
     subListSelect.innerHTML = '';
 
-    // Check if the selected list has categories
     if (selectedList && selectedList.categories) {
         subListSelectorWrapper.style.display = 'block';
-
-        // Add an option to study all terms from the categories
         subListSelect.add(new Option('All Terms', 'all'));
-
-        // Add an option for each category
         for (const categoryKey in selectedList.categories) {
             const categoryName = categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1);
             subListSelect.add(new Option(categoryName, categoryKey));
         }
     } else {
-        // Hide the sub-list selector if no categories exist
         subListSelectorWrapper.style.display = 'none';
     }
 }
 
-function createAccentButtons() {
-    ACCENTS.forEach((accent, index) => {
+function createAccentButtons(terms) {
+    // Clear any previous buttons
+    accentButtonsContainer.innerHTML = '';
+    
+    // Scan all French terms to find unique accented characters
+    const allFrenchText = terms.map(term => term.french).join('');
+    const accentSet = new Set(allFrenchText.match(/[àâéèêëîïôûüùçœ]/g));
+
+    // If no accents are found, do nothing
+    if (!accentSet) {
+        activeAccents = [];
+        return;
+    }
+
+    // Convert Set to a sorted array to ensure consistent order
+    activeAccents = Array.from(accentSet).sort();
+
+    // Create a button for each unique accent
+    activeAccents.forEach((accent, index) => {
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'accent-btn';
@@ -88,9 +98,10 @@ function handleAccentButtonClick(event) {
 
 function handleAccentShortcut(event) {
     const numKey = parseInt(event.key, 10);
-    if (!isNaN(numKey) && numKey >= 1 && numKey <= ACCENTS.length) {
+    // Use the dynamically generated activeAccents array for shortcuts
+    if (!isNaN(numKey) && numKey >= 1 && numKey <= activeAccents.length) {
         event.preventDefault();
-        insertAccent(ACCENTS[numKey - 1]);
+        insertAccent(activeAccents[numKey - 1]);
     }
 }
 
@@ -107,13 +118,11 @@ function handleQuizStart(event) {
         if (list.categories) {
             const subListKey = subListSelect.value;
             if (subListKey === 'all') {
-                // Combine all arrays from the categories into one
                 selectedTerms = Object.values(list.categories).flat();
             } else {
                 selectedTerms = list.categories[subListKey];
             }
         } else {
-            // Fallback for lists without categories
             selectedTerms = list.terms;
         }
     }
@@ -125,6 +134,10 @@ function startGame(selectedTerms) {
     quizTerms = [...selectedTerms];
     totalTermsInQuiz = selectedTerms.length;
     wronglyAnswered = [];
+    
+    // Dynamically create accent buttons for this specific quiz set
+    createAccentButtons(selectedTerms);
+    
     selectionContainer.style.display = 'none';
     completionScreen.style.display = 'none';
     quizBox.style.display = 'block';
@@ -234,17 +247,18 @@ function resetToSelection() {
     if (lastWronglyAnswered.length > 0 && document.getElementById('review-option')) {
         vocabListSelect.value = 'review-wrong';
     } else {
-        vocabListSelect.value = 'lesRapportsCh4';
+        // Default to the first list in the vocab file
+        vocabListSelect.value = Object.keys(vocabLists)[0];
     }
-    // Update sub-list dropdown visibility on reset
     updateSubListDropdown();
+    // Clear out the accent buttons when returning to the menu
+    accentButtonsContainer.innerHTML = '';
+    activeAccents = [];
 }
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
     populateVocabListsDropdown();
-    createAccentButtons();
-    // Set the initial state of the sub-list dropdown
     updateSubListDropdown(); 
     
     startQuizForm.addEventListener('submit', handleQuizStart);
@@ -253,6 +267,5 @@ document.addEventListener('DOMContentLoaded', () => {
     restartButton.addEventListener('click', resetToSelection);
     accentButtonsContainer.addEventListener('click', handleAccentButtonClick);
     answerInput.addEventListener('keydown', handleAccentShortcut);
-    // Add event listener to update sub-list when main list changes
     vocabListSelect.addEventListener('change', updateSubListDropdown);
 });
