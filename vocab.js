@@ -205,7 +205,7 @@ const vocabLists = {
             { french: "se marier", english: "to get married" },
             { french: "avoir lieu", english: "to take place" },
             { french: "le témoin", english: "the witness (male)" },
-            { french: "la témoin", english: "the witness (female)" },
+            { french: "la témoine", english: "the witness (female)" },
             { french: "la pièce montée", english: "the wedding cake" },
             { french: "une lune de miel", english: "a honeymoon" },
             { french: "une réception", english: "a reception" },
