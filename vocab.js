@@ -2,7 +2,7 @@
 
 const vocabLists = {
     'lesRapportsCh4': {
-        name: "Les Rapports - Chapitre 4",
+        name: "Les Rapports",
         categories: {
             nouns: [
                 { french: "une âme sœur", english: "soulmate" },
@@ -95,7 +95,7 @@ const vocabLists = {
         }
     },
     'laFamilleLecon6': {
-        name: "La Famille - Leçon 6",
+        name: "La Famille",
         // This list does not have categories, so the sub-list selector will automatically hide.
         terms: [
             { french: "aîné", english: "older (masculine)" },
@@ -145,7 +145,7 @@ const vocabLists = {
         ]
     },
     'lesCoutumesEtLesFetes': {
-        name: "Les coutumes et les fêtes",
+        name: "Les Coutumes et Les Fêtes",
         terms: [
             { french: "une fête religieuse", english: "a religious holiday" },
             { french: "une fête civile", english: "a civil holiday" },
@@ -189,8 +189,8 @@ const vocabLists = {
             { french: "le calendrier lunaire", english: "the lunar calendar" },
             { french: "le croissant lunaire", english: "the Islamic Crescent" },
             { french: "l'aïd el-fitr", english: "Eid al-Fitr" },
-            { french: "le mariage religieux", english: "the religious wedding" },
-            { french: "le mariage civil", english: "the civil wedding" },
+            { french: "un mariage religieux", english: "a religious wedding" },
+            { french: "un mariage civil", english: "a civil wedding" },
             { french: "le fiancé", english: "the fiancé (male)" },
             { french: "la fiancée", english: "the fiancée (female)" },
             { french: "les fiançailles", english: "the engagement (period)" },
@@ -215,5 +215,83 @@ const vocabLists = {
             { french: "être marié avec", english: "to be married to (masculine)" },
             { french: "être mariée avec", english: "to be married to (feminine)" }
         ]
+    },
+    'laNature': {
+    name: "L'Espace Vert",
+    categories: {
+        nature: [
+            { french: "un espace", english: "a space" },
+            { french: "les espaces verts", english: "a green space / park" },
+            { french: "une espèce", english: "a species" },
+            { french: "une espèce menacée", english: "an endangered species" },
+            { french: "la nature", english: "the nature" },
+            { french: "un pique-nique", english: "a picnic" },
+            { french: "une région", english: "a region" },
+            { french: "une ressource naturelle", english: "a natural resource" },
+            { french: "une vallée", english: "a valley" },
+            { french: "une rivière", english: "a river" },
+            { french: "un parc naturel", english: "a nature reserve" },
+            { french: "un paysage", english: "a landscape / scenery" },
+            { french: "une plante", english: "a plant" },
+            { french: "une pierre", english: "a stone" },
+            { french: "une île", english: "an island" },
+            { french: "une forêt tropicale", english: "a rain forest / tropical forest" },
+            { french: "une forêt", english: "a forest" },
+            { french: "une falaise", english: "a cliff" },
+            { french: "un rocher", english: "a rock" },
+            { french: "un glacier", english: "a glacier" },
+            { french: "une étoile", english: "a star" },
+            { french: "une côte", english: "a coast" },
+            { french: "un volcan", english: "a volcano" },
+            { french: "un sentier", english: "a path" },
+            { french: "un lac", english: "a lake" },
+            { french: "un fleuve", english: "a river" },
+            { french: "un désert", english: "a desert" },
+            { french: "un champ", english: "a field" },
+            { french: "un bois", english: "the woods" },
+            { french: "un arbre", english: "a tree" },
+            { french: "le ciel", english: "the sky" },
+            { french: "la lune", english: "the moon" },
+            { french: "la jungle", english: "the jungle" },
+            { french: "l'herbe", english: "the grass" },
+            { french: "en plein air", english: "outdoors" },
+            { french: "pur", english: "pure (m.)" },
+            { french: "pure", english: "pure (f.)" }
+        ],
+        animaux: [
+            { french: "une vache", english: "a cow" },
+            { french: "un serpent", english: "a snake" },
+            { french: "un lapin", english: "a rabbit" },
+            { french: "un écureuil", english: "a squirrel" },
+            { french: "une tortue", english: "a turtle" },
+            { french: "un singe", english: "a monkey" },
+            { french: "un requin", english: "a shark" },
+            { french: "un ours", english: "a bear" },
+            { french: "l'ours blanc", english: "a polar bear" },
+            { french: "un papillon", english: "a butterfly" },
+            { french: "une abeille", english: "a bee" },
+            { french: "un cerf", english: "a deer" },
+            { french: "un loup", english: "a wolf" },
+            { french: "un mouton", english: "a sheep" },
+            { french: "une chauve-souris", english: "a bat" },
+            { french: "un renard", english: "a fox" },
+            { french: "un corbeau", english: "a crow" },
+            { french: "une grenouille", english: "a frog" },
+            { french: "un poisson rouge", english: "a gold fish" },
+            { french: "un oiseau", english: "a bird" }
+        ],
+        ecologie: [
+            { french: "l'écologie", english: "ecology" },
+            { french: "le sauvetage des habitats naturels", english: "the restoration of habitats" },
+            { french: "un écosystème", english: "an ecosystem" },
+            { french: "le déboisement", english: "deforestation" },
+            { french: "la préservation", english: "preservation" },
+            { french: "la chasse", english: "hunting" },
+            { french: "l'extinction", english: "extinction" },
+            { french: "en voie d'extinction", english: "endangered" },
+            { french: "protéger", english: "to protect" },
+            { french: "l'écotourisme", english: "ecotourism" }
+        ]
+    }
     }
 };
