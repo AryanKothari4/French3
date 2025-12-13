@@ -293,5 +293,89 @@ const vocabLists = {
             { french: "l'écotourisme", english: "ecotourism" }
         ]
     }
+    },
+    'lEspaceVert': {
+    name: "L'Espace Vert - Sauvons la planète",
+    categories: {
+        verbes: [
+            { french: "débrancher", english: "to unplug / disconnect" },
+            { french: "agir", english: "to act" },
+            { french: "économiser l'énergie", english: "preserve / save energy" },
+            { french: "abolir", english: "to abolish" },
+            { french: "améliorer", english: "to improve" },
+            { french: "augmenter", english: "to increase" },
+            { french: "développer", english: "to develop" },
+            { french: "diminuer", english: "to decrease" },
+            { french: "gaspiller", english: "to waste" },
+            { french: "interdire", english: "to forbid / prohibit" },
+            { french: "jeter", english: "to throw out" },
+            { french: "polluer", english: "to pollute" },
+            { french: "prévenir un incendie", english: "to prevent a fire" },
+            { french: "préserver", english: "to preserve" },
+            { french: "ramasser", english: "to pick up" },
+            { french: "recycler", english: "to recycle" },
+            { french: "sauver la planète", english: "to save the planet" },
+            { french: "être contaminé", english: "to be contaminated (masculine)" },
+            { french: "être contaminée", english: "to be contaminated (feminine)" }
+        ],
+        noms: [
+            { french: "le déplacement", english: "movement" },
+            { french: "en charge", english: "charging" },
+            { french: "le développement durable", english: "sustainable development" },
+            { french: "l'assainissement", english: "the cleanup" },
+            { french: "l'eau potable", english: "drinking water" },
+            { french: "le produit chimique", english: "chemical product" },
+            { french: "le logement", english: "housing" },
+            { french: "une catastrophe", english: "a disaster / catastrophe" },
+            { french: "un nuage de pollution", english: "smog / a pollution cloud" },
+            { french: "un glissement de terrain", english: "a landslide" },
+            { french: "un emballage en plastique", english: "plastic packaging" },
+            { french: "le trou dans la couche d'ozone", english: "the hole in the ozone layer" },
+            { french: "le recyclage", english: "recycling" },
+            { french: "la réutilisation", english: "reuse" },
+            { french: "le réchauffement climatique", english: "global warming" },
+            { french: "le ramassage des ordures", english: "garbage collection" },
+            { french: "le gaspillage", english: "waste" },
+            { french: "le covoiturage", english: "carpooling" },
+            { french: "la surpopulation", english: "overpopulation" },
+            { french: "l'environnement", english: "the environment" },
+            { french: "l'énergie solaire", english: "solar energy" },
+            { french: "l'énergie nucléaire", english: "nuclear energy" },
+            { french: "l'énergie hydraulique", english: "hydraulic energy" },
+            { french: "une éolienne", english: "a windmill" },
+            { french: "l'effet de serre", english: "the greenhouse effect" },
+            { french: "un désastre", english: "a disaster" },
+            { french: "les déchets", english: "trash" },
+            { french: "une manifestation", english: "a demonstration / protest" },
+            { french: "le nettoyage", english: "cleanup / cleaning" },
+            { french: "des déchets toxiques (m.)", english: "toxic waste" },
+            { french: "une inondation", english: "a flood" },
+            { french: "une loi", english: "a law" },
+            { french: "un défenseur de l'environnement", english: "an environmentalist" },
+            { french: "une entreprise", english: "an enterprise / company" },
+            { french: "une canette", english: "a can" },
+            { french: "un carton", english: "a (cardboard) box" },
+            { french: "une usine", english: "a factory" },
+            { french: "la consommation d'énergie", english: "energy consumption" },
+            { french: "une population croissante", english: "a growing population" },
+            { french: "une centrale nucléaire", english: "a nuclear plant" }
+        ],
+        adjectifs: [
+            { french: "jetable", english: "disposable / single-use" },
+            { french: "pur(e)", english: "pure" },
+            { french: "environnemental(e)", english: "environmental(singular)" },
+            { french: "environnementaux", english: "environmental(masculine & plural)" },
+            { french: "renouvelable", english: "renewable" },
+            { french: "écologique", english: "ecological" }
+        ],
+        expressions: [
+            { french: "concernant", english: "concerning..." },
+            { french: "au niveau de", english: "when it comes to..." },
+            { french: "y compris", english: "including" },
+            { french: "avoir accès à", english: "to have access to" },
+            { french: "sans doute", english: "probably" },
+            { french: "sans aucun doute", english: "definitely" }
+        ]
     }
+}
 };
