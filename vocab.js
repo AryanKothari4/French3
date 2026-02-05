@@ -348,7 +348,7 @@ const vocabLists = {
             { french: "les déchets", english: "trash" },
             { french: "une manifestation", english: "a demonstration / protest" },
             { french: "le nettoyage", english: "cleanup / cleaning" },
-            { french: "des déchets toxiques (m.)", english: "toxic waste" },
+            { french: "des déchets toxiques", english: "toxic waste" },
             { french: "une inondation", english: "a flood" },
             { french: "une loi", english: "a law" },
             { french: "un défenseur de l'environnement", english: "an environmentalist" },
