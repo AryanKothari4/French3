@@ -3,7 +3,7 @@ const selectionContainer = document.getElementById('selection-container');
 const startQuizForm = document.getElementById('start-quiz-form');
 const vocabListSelect = document.getElementById('vocab-list-select');
 const subListSelectorWrapper = document.getElementById('sub-list-selector-wrapper');
-const subListSelect = document.getElementById('sub-list-select');
+const categoryCheckboxesContainer = document.getElementById('category-checkboxes');
 const quizBox = document.getElementById('quiz-box');
 const completionScreen = document.getElementById('completion-screen');
 const progressCounter = document.getElementById('progress-counter');
@@ -33,21 +33,74 @@ function populateVocabListsDropdown() {
     }
 }
 
-function updateSubListDropdown() {
+function updateCategoryCheckboxes() {
     const selectedListKey = vocabListSelect.value;
     const selectedList = vocabLists[selectedListKey];
     
-    subListSelect.innerHTML = '';
+    categoryCheckboxesContainer.innerHTML = '';
 
     if (selectedList && selectedList.categories) {
         subListSelectorWrapper.style.display = 'block';
-        subListSelect.add(new Option('All Terms', 'all'));
+        
+        // Create "Select All" checkbox
+        const selectAllDiv = document.createElement('div');
+        selectAllDiv.className = 'checkbox-item';
+        selectAllDiv.innerHTML = `
+            <input type="checkbox" id="select-all-checkbox" checked>
+            <label for="select-all-checkbox">Select All</label>
+        `;
+        categoryCheckboxesContainer.appendChild(selectAllDiv);
+        
+        // Create a separator
+        const separator = document.createElement('hr');
+        separator.style.border = 'none';
+        separator.style.borderTop = '1px solid rgba(255, 255, 255, 0.2)';
+        separator.style.margin = '8px 0';
+        categoryCheckboxesContainer.appendChild(separator);
+        
+        // Create checkbox for each category
         for (const categoryKey in selectedList.categories) {
             const categoryName = categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1);
-            subListSelect.add(new Option(categoryName, categoryKey));
+            const termCount = selectedList.categories[categoryKey].length;
+            
+            const checkboxDiv = document.createElement('div');
+            checkboxDiv.className = 'checkbox-item';
+            checkboxDiv.innerHTML = `
+                <input type="checkbox" id="category-${categoryKey}" value="${categoryKey}" class="category-checkbox" checked>
+                <label for="category-${categoryKey}">${categoryName} (${termCount})</label>
+            `;
+            categoryCheckboxesContainer.appendChild(checkboxDiv);
         }
+        
+        // Add event listener for "Select All"
+        const selectAllCheckbox = document.getElementById('select-all-checkbox');
+        selectAllCheckbox.addEventListener('change', handleSelectAllChange);
+        
+        // Add event listeners to individual checkboxes
+        const categoryCheckboxes = document.querySelectorAll('.category-checkbox');
+        categoryCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', handleCategoryCheckboxChange);
+        });
+        
     } else {
         subListSelectorWrapper.style.display = 'none';
+    }
+}
+
+function handleSelectAllChange(event) {
+    const isChecked = event.target.checked;
+    const categoryCheckboxes = document.querySelectorAll('.category-checkbox');
+    categoryCheckboxes.forEach(checkbox => {
+        checkbox.checked = isChecked;
+    });
+}
+
+function handleCategoryCheckboxChange() {
+    const categoryCheckboxes = document.querySelectorAll('.category-checkbox');
+    const allChecked = Array.from(categoryCheckboxes).every(cb => cb.checked);
+    const selectAllCheckbox = document.getElementById('select-all-checkbox');
+    if (selectAllCheckbox) {
+        selectAllCheckbox.checked = allChecked;
     }
 }
 
@@ -60,7 +113,7 @@ function createAccentButtons(terms) {
     const accentSet = new Set(allFrenchText.match(/[àâéèêëîïôûüùçœ]/g));
 
     // If no accents are found, do nothing
-    if (!accentSet) {
+    if (!accentSet || accentSet.size === 0) {
         activeAccents = [];
         return;
     }
@@ -116,12 +169,19 @@ function handleQuizStart(event) {
     } else {
         const list = vocabLists[selectedListKey];
         if (list.categories) {
-            const subListKey = subListSelect.value;
-            if (subListKey === 'all') {
-                selectedTerms = Object.values(list.categories).flat();
-            } else {
-                selectedTerms = list.categories[subListKey];
+            // Get all checked categories
+            const checkedCheckboxes = document.querySelectorAll('.category-checkbox:checked');
+            
+            if (checkedCheckboxes.length === 0) {
+                alert('Please select at least one category.');
+                return;
             }
+            
+            selectedTerms = [];
+            checkedCheckboxes.forEach(checkbox => {
+                const categoryKey = checkbox.value;
+                selectedTerms = selectedTerms.concat(list.categories[categoryKey]);
+            });
         } else {
             selectedTerms = list.terms;
         }
@@ -250,7 +310,7 @@ function resetToSelection() {
         // Default to the first list in the vocab file
         vocabListSelect.value = Object.keys(vocabLists)[0];
     }
-    updateSubListDropdown();
+    updateCategoryCheckboxes();
     // Clear out the accent buttons when returning to the menu
     accentButtonsContainer.innerHTML = '';
     activeAccents = [];
@@ -259,7 +319,7 @@ function resetToSelection() {
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
     populateVocabListsDropdown();
-    updateSubListDropdown(); 
+    updateCategoryCheckboxes(); 
     
     startQuizForm.addEventListener('submit', handleQuizStart);
     answerForm.addEventListener('submit', checkAnswer);
@@ -267,5 +327,5 @@ document.addEventListener('DOMContentLoaded', () => {
     restartButton.addEventListener('click', resetToSelection);
     accentButtonsContainer.addEventListener('click', handleAccentButtonClick);
     answerInput.addEventListener('keydown', handleAccentShortcut);
-    vocabListSelect.addEventListener('change', updateSubListDropdown);
+    vocabListSelect.addEventListener('change', updateCategoryCheckboxes);
 });

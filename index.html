@@ -19,8 +19,8 @@
             </div>
             
             <div class="form-group" id="sub-list-selector-wrapper" style="display: none;">
-                <label for="sub-list-select">Choose a Category</label>
-                <select id="sub-list-select"></select>
+                <label>Choose Categories (select at least one)</label>
+                <div id="category-checkboxes"></div>
             </div>
             
             <button type="submit">Start Quiz</button>
@@ -36,7 +36,6 @@
         </div>
         <form id="answer-form">
             <div class="input-group">
-                <!-- The only change is here: spellcheck="false" has been added -->
                 <input type="text" id="answer-input" placeholder="Type your answer..." autocomplete="off" lang="fr" autofocus spellcheck="false">
                 <button type="button" id="hint-button">Hint</button>
                 <button type="submit" id="check-button">Check</button>
