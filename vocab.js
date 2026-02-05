@@ -377,5 +377,99 @@ const vocabLists = {
             { french: "sans aucun doute", english: "definitely" }
         ]
     }
-}
+},'lesArts': {
+        name: "Les Arts",
+        categories: {
+            Beaux_Arts: [
+                { french: "une œuvre", english: "an artwork; a piece of art" },
+                { french: "un chef-d'œuvre", english: "a masterpiece" },
+                { french: "doué", english: "talented; gifted (masculine)" },
+                { french: "douée", english: "talented; gifted (feminine)" },
+                { french: "célèbre", english: "famous" },
+                { french: "une critique", english: "a review; a criticism" },
+                { french: "admirer", english: "to admire" },
+                { french: "rêver", english: "to dream" },
+                { french: "le but", english: "the goal" },
+                { french: "contempler", english: "to contemplate" }
+            ],
+            Les_Arts_De_La_Scene: [
+                { french: "un concert", english: "a concert" },
+                { french: "une comédie musicale", english: "a musical" },
+                { french: "faire de la musique", english: "to play music" },
+                { french: "jouer du piano", english: "to play the piano" },
+                { french: "jouer de la guitare", english: "to play guitar" },
+                { french: "jouer de la batterie", english: "to play the drums" },
+                { french: "faire de la peinture", english: "to paint" },
+                { french: "jouer un rôle", english: "to play a role" },
+                { french: "un compositeur", english: "a composer (masculine)" },
+                { french: "une compositrice", english: "a composer (feminine)" },
+                { french: "un danseur", english: "a dancer (masculine)" },
+                { french: "une danseuse", english: "a dancer (feminine)" },
+                { french: "un metteur en scène", english: "a director (of a play) (masculine)" },
+                { french: "une metteuse en scène", english: "a director (of a play) (feminine)" },
+                { french: "un réalisateur, ", english: "a director (of a film) (masculine)" },
+                { french: "une réalisatrice", english: "a director (of a film) (feminine)" },
+                { french: "un chœur", english: "a choir; a chorus" },
+                { french: "une danse", english: "a dance" },
+                { french: "une chanson", english: "a song" },
+                { french: "chanter", english: "to sing" },
+                { french: "une tragédie", english: "a tragedy" },
+                { french: "une comédie", english: "a comedy" },
+                { french: "le personnage principal", english: "the main character" },
+                { french: "un personnage", english: "a character" },
+                { french: "une pièce de théâtre", english: "a play" },
+                { french: "un acteur", english: "an actor (masculine)" },
+                { french: "une actrice", english: "an actor (feminine)" },
+                { french: "un(e) comédien(ne)", english: "an actor/comedien (m. + f.)" },
+                { french: "applaudir", english: "to applaud" },
+                { french: "présenter", english: "to present" },
+                { french: "un spectateur", english: "a spectator (masculine)" },
+                { french: "une spectatrice", english: "a spectator (feminine)" },
+                { french: "une place", english: "a seat" },
+                { french: "le début", english: "the beginning" },
+                { french: "un entracte", english: "an intermission" },
+                { french: "la fin", english: "the end" },
+                { french: "un orchestre", english: "an orchestra" },
+                { french: "un festival", english: "a festival" },
+                { french: "des festivals", english: "festivals" }
+            ],
+            Les_Arts_Visuels: [
+                { french: "faire les musées", english: "to go to museums" },
+                { french: "un(e) peintre", english: "a painter" },
+                { french: "une sculpture", english: "a sculpture" },
+                { french: "une peinture", english: "a painting (feminine)" },
+                { french: "un tableau", english: "a painting (masculine)" },
+                { french: "un sculpteur", english: "a sculptor (masculine)" },
+                { french: "une sculptrice", english: "a sculptor (feminine)" },
+                { french: "une exposition", english: "an exhibit" },
+                { french: "gratuit(e)", english: "free (m. + f.)" }
+            ],
+            Expressions_Utiles: [
+                { french: "ça me rend...", english: "it makes me... (emotion)" },
+                { french: "car", english: "because (formal)" },
+                { french: "parce que", english: "because (common speech)" },
+                { french: "c'est une œuvre de...", english: "it's a work of art of... (artist name)" },
+                { french: "ce n'est pas comme ça", english: "it's not like that" },
+                { french: "ce n'est pas correct", english: "that's incorrect" },
+                { french: "je ne suis pas d'accord", english: "I don't agree" },
+                { french: "je crois que tu as mal compris", english: "I think you misunderstood" },
+                { french: "je trouve ça...", english: "I find that..." },
+                { french: "je trouve ça [+ adj]", english: "I find that... [+ adjective]" },
+                { french: "créatif", english: "creative (masculine)" },
+                { french: "créative", english: "creative (feminine)" },
+                { french: "artistique", english: "artistic" },
+                { french: "(quelque chose) me plaît", english: "I like (something)" },
+                { french: "on devrait", english: "we/one should" },
+                { french: "tu n'as pas raison", english: "you're not right" },
+                { french: "tu as tort", english: "you're wrong" },
+                { french: "ça me fait imaginer", english: "it makes me imagine/dream" },
+                { french: "ça me fait rêver", english: "it makes me dream" },
+                { french: "ça me fait penser à", english: "it makes me think about" },
+                { french: "qu'en penses-tu?", english: "what do you think about it?" }
+            ],
+            Additional_Words: [
+                // Empty section for additional vocabulary that could be on the test
+            ]
+        }
+    }
 };
