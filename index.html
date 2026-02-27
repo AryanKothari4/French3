@@ -1,11 +1,138 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>French Vocabulary Quiz</title>
-    <!-- Link to the external CSS file -->
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* CSS FROM style.css */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        :root {
+            --correct-color: #2ecc71;
+            --incorrect-color: #e74c3c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #302b63 0%, #24243e 100%);
+            background-attachment: fixed;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            width: 100%;
+            max-width: 550px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        h1, h2 { font-weight: 600; }
+        h1 { margin-bottom: 10px; }
+
+        #progress-counter, .setup-description { margin-bottom: 30px; font-weight: 300; opacity: 0.8; }
+        #question-prompt { font-size: 1.2rem; margin-bottom: 10px; font-weight: 300; }
+        #question-term { font-size: 2.5rem; margin-bottom: 30px; min-height: 50px; font-weight: 600; }
+
+        .input-group { display: flex; gap: 10px; }
+        #answer-input { flex-grow: 1; }
+        #answer-input, .form-group select { padding: 15px; font-size: 1rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.5); background: rgba(255, 255, 255, 0.2); color: #fff; outline: none; transition: all 0.2s ease; font-family: 'Poppins', sans-serif; }
+        #answer-input::placeholder { color: rgba(255, 255, 255, 0.6); }
+        #answer-input:focus, .form-group select:focus { background: rgba(255, 255, 255, 0.3); border-color: rgba(255, 255, 255, 0.8); }
+        #answer-input:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .form-group { margin-bottom: 30px; text-align: left; }
+        .form-group label { margin-bottom: 5px; font-size: 0.9rem; opacity: 0.8; display: block; }
+        .form-group select { width: 100%; }
+        .form-group select option { background: #3c3782; color: #fff; }
+
+        #category-checkboxes {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background 0.2s ease;
+        }
+
+        .checkbox-item:hover { background: rgba(255, 255, 255, 0.1); }
+        .checkbox-item input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; accent-color: #fff; }
+        .checkbox-item label { margin: 0; font-size: 1rem; opacity: 1; cursor: pointer; flex-grow: 1; }
+
+        button { padding: 15px 25px; font-size: 1rem; font-weight: 600; border: none; border-radius: 8px; background: #fff; color: #302b63; cursor: pointer; transition: all 0.2s ease; width: 100%; }
+        .input-group button { width: auto; }
+        button:hover { background: #f0f0f0; transform: translateY(-2px); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; transform: translateY(0); }
+
+        #hint-button { background: transparent; border: 1px solid rgba(255, 255, 255, 0.6); color: #fff; width: auto; padding: 15px; }
+        #hint-button:hover:not(:disabled) { background: rgba(255, 255, 255, 0.2); }
+
+        #accent-buttons { margin-top: 15px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+        .accent-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #fff;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            font-size: 1.1rem;
+            font-weight: 400;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .accent-btn:hover { background: rgba(255, 255, 255, 0.4); transform: translateY(-1px); }
+        .accent-btn sup { position: absolute; top: 3px; left: 4px; font-size: 0.7rem; opacity: 0.7; }
+
+        #feedback-message { min-height: 40px; display: flex; justify-content: center; align-items: center; margin-top: 20px; font-weight: 600; }
+        .correct, .incorrect { background-color: rgba(0, 0, 0, 0.6); padding: 5px 15px; border-radius: 8px; animation: fadeIn 0.3s; }
+        .correct { color: var(--correct-color); }
+        .incorrect { color: var(--incorrect-color); }
+        .hint-message { font-size: 0.9rem; opacity: 0.8; font-weight: 400; }
+        #continue-prompt { display: none; margin-top: 15px; font-size: 0.9rem; opacity: 0.7; animation: fadeIn 0.5s; }
+        #quiz-box, #completion-screen { display: none; }
+        #completion-screen { flex-direction: column; align-items: center; justify-content: center; }
+        #completion-screen h2 { font-size: 2.5rem; margin-bottom: 20px; }
+        #final-score { font-size: 1.2rem; margin-bottom: 30px; }
+        #review-section { width: 100%; margin-top: 20px; text-align: left; }
+        #review-section h3 { text-align: center; margin-bottom: 15px; font-weight: 400; }
+        #wrong-answers-list { list-style-type: none; max-height: 150px; overflow-y: auto; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; }
+        #wrong-answers-list li { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.2); font-size: 0.95rem; }
+        #wrong-answers-list li:last-child { border-bottom: none; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+    </style>
 </head>
 <body>
 
@@ -40,9 +167,7 @@
                 <button type="button" id="hint-button">Hint</button>
                 <button type="submit" id="check-button">Check</button>
             </div>
-            <div id="accent-buttons">
-                <!-- Accent buttons will be inserted here by JavaScript -->
-            </div>
+            <div id="accent-buttons"></div>
         </form>
         <div id="feedback-message"></div>
         <p id="continue-prompt">Press Enter or click Continue</p>
@@ -58,8 +183,786 @@
         <button id="restart-button">Quiz Again</button>
     </div>
 
-    <!-- Load vocabulary data first, then the main script that uses it -->
-    <script src="vocab.js" defer></script>
-    <script src="script.js" defer></script>
+    <script>
+        /* JS FROM vocab.js */
+        // vocab.js - Contains all vocabulary lists for the quiz.
+
+const vocabLists = {
+    'lesRapportsCh4': {
+        name: "Les Rapports",
+        categories: {
+            nouns: [
+                { french: "une âme sœur", english: "soulmate" },
+                { french: "une amitié", english: "friendship" },
+                { french: "des commérages", english: "gossip" },
+                { french: "un esprit", english: "spirit" },
+                { french: "un mariage", english: "wedding/marriage" },
+                { french: "un rendez-vous", english: "date" },
+                { french: "une responsabilité", english: "responsibility" }
+            ],
+            verbs: [
+                { french: "compter sur", english: "to count on" },
+                { french: "draguer", english: "to flirt" },
+                { french: "s'engager", english: "to commit" },
+                { french: "faire confiance", english: "to trust" },
+                { french: "mentir", english: "to lie" },
+                { french: "mériter", english: "to be worth" },
+                { french: "partager", english: "to share" },
+                { french: "poser un lapin", english: "to stand someone up" },
+                { french: "quitter quelqu'un", english: "to leave someone" },
+                { french: "rompre", english: "to break up (using verb that starts with r)" },
+                { french: "casser (avec)", english: "to break up (using verb that starts with c)" },
+                { french: "sortir avec", english: "to go out with" },
+                { french: "agacer", english: "to annoy (starts with a)" },
+                { french: "énerver", english: "to annoy (starts with é)" },
+                { french: "aimer", english: "to love" },
+                { french: "avoir honte", english: "to be ashamed of" },
+                { french: "en avoir marre", english: "to be fed up with" },
+                { french: "s'entendre bien", english: "to get along well" },
+                { french: "s'entendre mal", english: "to get along badly" },
+                { french: "gêner", english: "to bother" },
+                { french: "se mettre en colère contre", english: "to get angry with" },
+                { french: "ressentir", english: "to feel" },
+                { french: "rêver de", english: "to dream of/about" },
+                { french: "tomber amoureux", english: "to fall in love (masculine)" },
+                { french: "tomber amoureuse", english: "to fall in love (feminine)" },
+                { french: "divorcer", english: "to divorce" },
+                { french: "se fiancer", english: "to get engaged" },
+                { french: "se marier", english: "to get married" },
+                { french: "vivre en union libre", english: "to live together" },
+                { french: "avoir confiance en soi", english: "to be confident" }
+            ],
+            adjectives: [
+                { french: "accablé", english: "overwhelmed (masculine)" },
+                { french: "accablée", english: "overwhelmed (feminine)" },
+                { french: "anxieux", english: "anxious (masculine)" },
+                { french: "anxieuse", english: "anxious (feminine)" },
+                { french: "contrarié", english: "unpleasant (masculine)" },
+                { french: "contrariée", english: "unpleasant (feminine)" },
+                { french: "déprimé", english: "depressed (masculine)" },
+                { french: "déprimée", english: "depressed (feminine)" },
+                { french: "enthousiaste", english: "enthusiastic" },
+                { french: "fâché", english: "angry (masculine)" },
+                { french: "fâchée", english: "angry (feminine)" },
+                { french: "inquiet", english: "worried (masculine)" },
+                { french: "inquiète", english: "worried (feminine)" },
+                { french: "jaloux", english: "jealous (masculine)" },
+                { french: "jalouse", english: "jealous (feminine)" },
+                { french: "passager", english: "fleeting / temporary (masculine)" },
+                { french: "passagère", english: "fleeting / temporary (feminine)" },
+                { french: "célibataire", english: "single" },
+                { french: "veuf", english: "widower" },
+                { french: "veuve", english: "widow" },
+                { french: "charmant", english: "charming (masculine)" },
+                { french: "charmante", english: "charming (feminine)" },
+                { french: "économe", english: "thrifty" },
+                { french: "franc", english: "direct (masculine)" },
+                { french: "franche", english: "direct (feminine)" },
+                { french: "génial", english: "great (masculine)" },
+                { french: "géniale", english: "great (feminine)" },
+                { french: "honnête", english: "honest" },
+                { french: "malhonnête", english: "dishonest" },
+                { french: "idéaliste", english: "idealistic" },
+                { french: "inoubliable", english: "unforgettable" },
+                { french: "mûr", english: "mature" },
+                { french: "affectueux", english: "affectionate (masculine)" },
+                { french: "affectueuse", english: "affectionate (feminine)" },
+                { french: "orgueilleux", english: "proud (masculine)" },
+                { french: "orgueilleuse", english: "proud (feminine)" },
+                { french: "prudent", english: "careful (masculine)" },
+                { french: "prudente", english: "careful (feminine)" },
+                { french: "séduisant", english: "attractive (masculine)" },
+                { french: "séduisante", english: "attractive (feminine)" },
+                { french: "sensible", english: "sensitive" },
+                { french: "timide", english: "shy" },
+                { french: "tranquille", english: "calm" },
+                { french: "fidèle", english: "faithful" },
+                { french: "infidèle", english: "unfaithful" }
+            ]
+        }
+    },
+    'laFamilleLecon6': {
+        name: "La Famille",
+        // This list does not have categories, so the sub-list selector will automatically hide.
+        terms: [
+            { french: "aîné", english: "older (masculine)" },
+            { french: "aînée", english: "older (feminine)" },
+            { french: "cadet", english: "younger (masculine)" },
+            { french: "cadette", english: "younger (feminine)" },
+            { french: "un beau-frère", english: "step-brother" },
+            { french: "un beau-frère", english: "brother-in-law" },
+            { french: "un beau-père", english: "step-father" },
+            { french: "un beau-père", english: "father-in-law" },
+            { french: "une belle-mère", english: "step-mother" },
+            { french: "une belle-mère", english: "mother-in-law" },
+            { french: "une belle-sœur", english: "step-sister" },
+            { french: "une belle-sœur", english: "sister-in-law" },
+            { french: "un cousin", english: "cousin (male)" },
+            { french: "une cousine", english: "cousin (female)" },
+            { french: "un demi-frère", english: "half-brother" },
+            { french: "une demi-sœur", english: "half-sister" },
+            { french: "les enfants", english: "children" },
+            { french: "un époux", english: "spouse / husband (male)" },
+            { french: "une épouse", english: "spouse / wife (female)" },
+            { french: "une famille", english: "family" },
+            { french: "une femme", english: "wife / woman" },
+            { french: "une fille", english: "daughter / girl" },
+            { french: "un fils", english: "son" },
+            { french: "un frère", english: "brother" },
+            { french: "une grand-mère", english: "grandmother" },
+            { french: "un grand-père", english: "grandfather" },
+            { french: "les grands-parents", english: "grandparents" },
+            { french: "un mari", english: "husband" },
+            { french: "une mère", english: "mother" },
+            { french: "un neveu", english: "nephew" },
+            { french: "une nièce", english: "niece" },
+            { french: "un oncle", english: "uncle" },
+            { french: "les parents", english: "parents" },
+            { french: "un père", english: "father" },
+            { french: "une petite-fille", english: "granddaughter" },
+            { french: "un petit-fils", english: "grandson" },
+            { french: "les petits-enfants", english: "grandchildren" },
+            { french: "une sœur", english: "sister" },
+            { french: "une tante", english: "aunt" },
+            { french: "un chat", english: "cat" },
+            { french: "un chien", english: "dog" },
+            { french: "un oiseau", english: "bird" },
+            { french: "un poisson", english: "fish" },
+            { french: "un poisson rouge", english: "goldfish" }
+        ]
+    },
+    'lesCoutumesEtLesFetes': {
+        name: "Les Coutumes et Les Fêtes",
+        terms: [
+            { french: "une fête religieuse", english: "a religious holiday" },
+            { french: "une fête civile", english: "a civil holiday" },
+            { french: "fêter", english: "to celebrate" },
+            { french: "un défilé", english: "a parade" },
+            { french: "une fête nationale", english: "a national holiday" },
+            { french: "une tribune", english: "a grandstand" },
+            { french: "un feu d'artifice", english: "a firework display" },
+            { french: "un drapeau", english: "a flag" },
+            { french: "défiler", english: "to march/parade" },
+            { french: "le carnaval", english: "the carnaval" },
+            { french: "un char", english: "a float" },
+            { french: "lancer", english: "to throw" },
+            { french: "des confettis", english: "some confetti" },
+            { french: "le bal populaire", english: "the local/village dance" },
+            { french: "le Noël", english: "Christmas / Christmastime" },
+            { french: "Joyeux Noël", english: "Merry Christmas" },
+            { french: "une carte de voeux", english: "a greeting card" },
+            { french: "le Père Noël", english: "Santa Claus" },
+            { french: "la veille", english: "the eve" },
+            { french: "le réveillon", english: "Christmas Eve/New Year's Eve dinner" },
+            { french: "un cadeau de Noël", english: "a Christmas present" },
+            { french: "chrétien", english: "Christian (masculine)" },
+            { french: "chrétienne", english: "Christian (feminine)" },
+            { french: "le christianisme", english: "Christianity" },
+            { french: "le judaïsme", english: "Judaism" },
+            { french: "Hanoukka", english: "Hanukkah" },
+            { french: "la fête des Lumières", english: "the Holiday of Lights" },
+            { french: "une menorah", english: "a menorah" },
+            { french: "juif", english: "Jewish (masculine)" },
+            { french: "juive", english: "Jewish (feminine)" },
+            { french: "une synagogue", english: "a synagogue" },
+            { french: "allumer les bougies", english: "to light the candles" },
+            { french: "le jour de l'An", english: "New Year's Day" },
+            { french: "le Nouvel An", english: "The New Year" },
+            { french: "Bonne année", english: "Happy New Year!" },
+            { french: "une mosquée", english: "a mosque" },
+            { french: "musulman", english: "Muslim (masculine)" },
+            { french: "musulmane", english: "Muslim (feminine)" },
+            { french: "l'islam", english: "Islam" },
+            { french: "le calendrier lunaire", english: "the lunar calendar" },
+            { french: "le croissant lunaire", english: "the Islamic Crescent" },
+            { french: "l'aïd el-fitr", english: "Eid al-Fitr" },
+            { french: "un mariage religieux", english: "a religious wedding" },
+            { french: "un mariage civil", english: "a civil wedding" },
+            { french: "le fiancé", english: "the fiancé (male)" },
+            { french: "la fiancée", english: "the fiancée (female)" },
+            { french: "les fiançailles", english: "the engagement (period)" },
+            { french: "une bague de fiançailles", english: "an engagement ring" },
+            { french: "le marié", english: "the groom" },
+            { french: "la mariée", english: "the bride" },
+            { french: "les mariés", english: "the newlyweds" },
+            { french: "la demoiselle d'honneur", english: "the maid of honor / matron of honor" },
+            { french: "le garçon d'honneur", english: "the best man / the groomsman" },
+            { french: "une alliance", english: "a wedding ring" },
+            { french: "la mairie", english: "the town hall" },
+            { french: "se marier", english: "to get married" },
+            { french: "avoir lieu", english: "to take place" },
+            { french: "le témoin", english: "the witness (male)" },
+            { french: "la témoine", english: "the witness (female)" },
+            { french: "la pièce montée", english: "the wedding cake" },
+            { french: "une lune de miel", english: "a honeymoon" },
+            { french: "une réception", english: "a reception" },
+            { french: "féliciter", english: "to congratulate" },
+            { french: "se fiancer avec", english: "to get engaged to" },
+            { french: "épouser quelqu'un", english: "to marry someone" },
+            { french: "être marié avec", english: "to be married to (masculine)" },
+            { french: "être mariée avec", english: "to be married to (feminine)" }
+        ]
+    },
+    'laNature': {
+    name: "L'Espace Vert",
+    categories: {
+        nature: [
+            { french: "un espace", english: "a space" },
+            { french: "les espaces verts", english: "a green space / park" },
+            { french: "une espèce", english: "a species" },
+            { french: "une espèce menacée", english: "an endangered species" },
+            { french: "la nature", english: "the nature" },
+            { french: "un pique-nique", english: "a picnic" },
+            { french: "une région", english: "a region" },
+            { french: "une ressource naturelle", english: "a natural resource" },
+            { french: "une vallée", english: "a valley" },
+            { french: "une rivière", english: "a river" },
+            { french: "un parc naturel", english: "a nature reserve" },
+            { french: "un paysage", english: "a landscape / scenery" },
+            { french: "une plante", english: "a plant" },
+            { french: "une pierre", english: "a stone" },
+            { french: "une île", english: "an island" },
+            { french: "une forêt tropicale", english: "a rain forest / tropical forest" },
+            { french: "une forêt", english: "a forest" },
+            { french: "une falaise", english: "a cliff" },
+            { french: "un rocher", english: "a rock" },
+            { french: "un glacier", english: "a glacier" },
+            { french: "une étoile", english: "a star" },
+            { french: "une côte", english: "a coast" },
+            { french: "un volcan", english: "a volcano" },
+            { french: "un sentier", english: "a path" },
+            { french: "un lac", english: "a lake" },
+            { french: "un fleuve", english: "a river" },
+            { french: "un désert", english: "a desert" },
+            { french: "un champ", english: "a field" },
+            { french: "un bois", english: "the woods" },
+            { french: "un arbre", english: "a tree" },
+            { french: "le ciel", english: "the sky" },
+            { french: "la lune", english: "the moon" },
+            { french: "la jungle", english: "the jungle" },
+            { french: "l'herbe", english: "the grass" },
+            { french: "en plein air", english: "outdoors" },
+            { french: "pur", english: "pure (m.)" },
+            { french: "pure", english: "pure (f.)" }
+        ],
+        animaux: [
+            { french: "une vache", english: "a cow" },
+            { french: "un serpent", english: "a snake" },
+            { french: "un lapin", english: "a rabbit" },
+            { french: "un écureuil", english: "a squirrel" },
+            { french: "une tortue", english: "a turtle" },
+            { french: "un singe", english: "a monkey" },
+            { french: "un requin", english: "a shark" },
+            { french: "un ours", english: "a bear" },
+            { french: "l'ours blanc", english: "a polar bear" },
+            { french: "un papillon", english: "a butterfly" },
+            { french: "une abeille", english: "a bee" },
+            { french: "un cerf", english: "a deer" },
+            { french: "un loup", english: "a wolf" },
+            { french: "un mouton", english: "a sheep" },
+            { french: "une chauve-souris", english: "a bat" },
+            { french: "un renard", english: "a fox" },
+            { french: "un corbeau", english: "a crow" },
+            { french: "une grenouille", english: "a frog" },
+            { french: "un poisson rouge", english: "a gold fish" },
+            { french: "un oiseau", english: "a bird" }
+        ],
+        ecologie: [
+            { french: "l'écologie", english: "ecology" },
+            { french: "le sauvetage des habitats naturels", english: "the restoration of habitats" },
+            { french: "un écosystème", english: "an ecosystem" },
+            { french: "le déboisement", english: "deforestation" },
+            { french: "la préservation", english: "preservation" },
+            { french: "la chasse", english: "hunting" },
+            { french: "l'extinction", english: "extinction" },
+            { french: "en voie d'extinction", english: "endangered" },
+            { french: "protéger", english: "to protect" },
+            { french: "l'écotourisme", english: "ecotourism" }
+        ]
+    }
+    },
+    'lEspaceVert': {
+    name: "L'Espace Vert - Sauvons la planète",
+    categories: {
+        verbes: [
+            { french: "débrancher", english: "to unplug / disconnect" },
+            { french: "agir", english: "to act" },
+            { french: "économiser l'énergie", english: "preserve / save energy" },
+            { french: "abolir", english: "to abolish" },
+            { french: "améliorer", english: "to improve" },
+            { french: "augmenter", english: "to increase" },
+            { french: "développer", english: "to develop" },
+            { french: "diminuer", english: "to decrease" },
+            { french: "gaspiller", english: "to waste" },
+            { french: "interdire", english: "to forbid / prohibit" },
+            { french: "jeter", english: "to throw out" },
+            { french: "polluer", english: "to pollute" },
+            { french: "prévenir un incendie", english: "to prevent a fire" },
+            { french: "préserver", english: "to preserve" },
+            { french: "ramasser", english: "to pick up" },
+            { french: "recycler", english: "to recycle" },
+            { french: "sauver la planète", english: "to save the planet" },
+            { french: "être contaminé", english: "to be contaminated (masculine)" },
+            { french: "être contaminée", english: "to be contaminated (feminine)" }
+        ],
+        noms: [
+            { french: "le déplacement", english: "movement" },
+            { french: "en charge", english: "charging" },
+            { french: "le développement durable", english: "sustainable development" },
+            { french: "l'assainissement", english: "the cleanup" },
+            { french: "l'eau potable", english: "drinking water" },
+            { french: "le produit chimique", english: "chemical product" },
+            { french: "le logement", english: "housing" },
+            { french: "une catastrophe", english: "a disaster / catastrophe" },
+            { french: "un nuage de pollution", english: "smog / a pollution cloud" },
+            { french: "un glissement de terrain", english: "a landslide" },
+            { french: "un emballage en plastique", english: "plastic packaging" },
+            { french: "le trou dans la couche d'ozone", english: "the hole in the ozone layer" },
+            { french: "le recyclage", english: "recycling" },
+            { french: "la réutilisation", english: "reuse" },
+            { french: "le réchauffement climatique", english: "global warming" },
+            { french: "le ramassage des ordures", english: "garbage collection" },
+            { french: "le gaspillage", english: "waste" },
+            { french: "le covoiturage", english: "carpooling" },
+            { french: "la surpopulation", english: "overpopulation" },
+            { french: "l'environnement", english: "the environment" },
+            { french: "l'énergie solaire", english: "solar energy" },
+            { french: "l'énergie nucléaire", english: "nuclear energy" },
+            { french: "l'énergie hydraulique", english: "hydraulic energy" },
+            { french: "une éolienne", english: "a windmill" },
+            { french: "l'effet de serre", english: "the greenhouse effect" },
+            { french: "un désastre", english: "a disaster" },
+            { french: "les déchets", english: "trash" },
+            { french: "une manifestation", english: "a demonstration / protest" },
+            { french: "le nettoyage", english: "cleanup / cleaning" },
+            { french: "des déchets toxiques", english: "toxic waste" },
+            { french: "une inondation", english: "a flood" },
+            { french: "une loi", english: "a law" },
+            { french: "un défenseur de l'environnement", english: "an environmentalist" },
+            { french: "une entreprise", english: "an enterprise / company" },
+            { french: "une canette", english: "a can" },
+            { french: "un carton", english: "a (cardboard) box" },
+            { french: "une usine", english: "a factory" },
+            { french: "la consommation d'énergie", english: "energy consumption" },
+            { french: "une population croissante", english: "a growing population" },
+            { french: "une centrale nucléaire", english: "a nuclear plant" }
+        ],
+        adjectifs: [
+            { french: "jetable", english: "disposable / single-use" },
+            { french: "pur(e)", english: "pure" },
+            { french: "environnemental(e)", english: "environmental(singular)" },
+            { french: "environnementaux", english: "environmental(masculine & plural)" },
+            { french: "renouvelable", english: "renewable" },
+            { french: "écologique", english: "ecological" }
+        ],
+        expressions: [
+            { french: "concernant", english: "concerning..." },
+            { french: "au niveau de", english: "when it comes to..." },
+            { french: "y compris", english: "including" },
+            { french: "avoir accès à", english: "to have access to" },
+            { french: "sans doute", english: "probably" },
+            { french: "sans aucun doute", english: "definitely" }
+        ]
+    }
+},'lesArts': {
+        name: "Les Arts",
+        categories: {
+            Beaux_Arts: [
+                { french: "une œuvre", english: "an artwork; a piece of art" },
+                { french: "un chef-d'œuvre", english: "a masterpiece" },
+                { french: "doué", english: "talented; gifted (masculine)" },
+                { french: "douée", english: "talented; gifted (feminine)" },
+                { french: "célèbre", english: "famous" },
+                { french: "une critique", english: "a review; a criticism" },
+                { french: "admirer", english: "to admire" },
+                { french: "rêver", english: "to dream" },
+                { french: "le but", english: "the goal" },
+                { french: "contempler", english: "to contemplate" }
+            ],
+            Les_Arts_De_La_Scene: [
+                { french: "un concert", english: "a concert" },
+                { french: "une comédie musicale", english: "a musical" },
+                { french: "faire de la musique", english: "to play music" },
+                { french: "jouer du piano", english: "to play the piano" },
+                { french: "jouer de la guitare", english: "to play guitar" },
+                { french: "jouer de la batterie", english: "to play the drums" },
+                { french: "faire de la peinture", english: "to paint" },
+                { french: "jouer un rôle", english: "to play a role" },
+                { french: "un compositeur", english: "a composer (masculine)" },
+                { french: "une compositrice", english: "a composer (feminine)" },
+                { french: "un danseur", english: "a dancer (masculine)" },
+                { french: "une danseuse", english: "a dancer (feminine)" },
+                { french: "un metteur en scène", english: "a director (of a play) (masculine)" },
+                { french: "une metteuse en scène", english: "a director (of a play) (feminine)" },
+                { french: "un réalisateur", english: "a director (of a film) (masculine)" },
+                { french: "une réalisatrice", english: "a director (of a film) (feminine)" },
+                { french: "un chœur", english: "a choir; a chorus" },
+                { french: "une danse", english: "a dance" },
+                { french: "une chanson", english: "a song" },
+                { french: "chanter", english: "to sing" },
+                { french: "une tragédie", english: "a tragedy" },
+                { french: "une comédie", english: "a comedy" },
+                { french: "le personnage principal", english: "the main character" },
+                { french: "un personnage", english: "a character" },
+                { french: "une pièce de théâtre", english: "a play" },
+                { french: "un acteur", english: "an actor (masculine)" },
+                { french: "une actrice", english: "an actor (feminine)" },
+                { french: "un(e) comédien(ne)", english: "an actor/comedien (m. + f.)" },
+                { french: "applaudir", english: "to applaud" },
+                { french: "présenter", english: "to present" },
+                { french: "un spectateur", english: "a spectator (masculine)" },
+                { french: "une spectatrice", english: "a spectator (feminine)" },
+                { french: "une place", english: "a seat" },
+                { french: "le début", english: "the beginning" },
+                { french: "un entracte", english: "an intermission" },
+                { french: "la fin", english: "the end" },
+                { french: "un orchestre", english: "an orchestra" },
+                { french: "un festival", english: "a festival" },
+                { french: "des festivals", english: "festivals" }
+            ],
+            Les_Arts_Visuels: [
+                { french: "faire les musées", english: "to go to museums" },
+                { french: "un(e) peintre", english: "a painter" },
+                { french: "une sculpture", english: "a sculpture" },
+                { french: "une peinture", english: "a painting (feminine)" },
+                { french: "un tableau", english: "a painting (masculine)" },
+                { french: "un sculpteur", english: "a sculptor (masculine)" },
+                { french: "une sculptrice", english: "a sculptor (feminine)" },
+                { french: "une exposition", english: "an exhibit" },
+                { french: "gratuit(e)", english: "free (m. + f.)" }
+            ],
+            Expressions_Utiles: [
+                { french: "ça me rend...", english: "it makes me... (emotion)" },
+                { french: "car", english: "because (formal)" },
+                { french: "parce que", english: "because (common speech)" },
+                { french: "c'est une œuvre de...", english: "it's a work of art of... (artist name)" },
+                { french: "ce n'est pas comme ça", english: "it's not like that" },
+                { french: "ce n'est pas correct", english: "that's incorrect" },
+                { french: "je ne suis pas d'accord", english: "I don't agree" },
+                { french: "je crois que tu as mal compris", english: "I think you misunderstood" },
+                { french: "je trouve ça...", english: "I find that..." },
+                { french: "je trouve ça [+ adj]", english: "I find that... [+ adjective]" },
+                { french: "créatif", english: "creative (masculine)" },
+                { french: "créative", english: "creative (feminine)" },
+                { french: "artistique", english: "artistic" },
+                { french: "(quelque chose) me plaît", english: "I like (something)" },
+                { french: "on devrait", english: "we/one should" },
+                { french: "tu n'as pas raison", english: "you're not right" },
+                { french: "tu as tort", english: "you're wrong" },
+                { french: "ça me fait imaginer", english: "it makes me imagine/dream" },
+                { french: "ça me fait rêver", english: "it makes me dream" },
+                { french: "ça me fait penser à", english: "it makes me think about" },
+                { french: "qu'en penses-tu?", english: "what do you think about it?" }
+            ]
+        }
+    },'lesArtsV2': {
+    name: "Les Arts V2",
+    categories: {
+        La_Littérature: [
+            { french: "la bande dessinée", english: "a comic strip" },
+            { french: "le sentiment", english: "the feeling" },
+            { french: "la poésie", english: "poetry" },
+            { french: "la pensée", english: "the thought" },
+            { french: "un poème", english: "a poem" },
+            { french: "un roman", english: "a novel" },
+            { french: "un conte", english: "a tale" },
+            { french: "littéraire", english: "literary" },
+            { french: "un dramaturge", english: "a male playwright" },
+            { french: "une dramaturge", english: "a female playwright" },
+            { french: "publier", english: "to publish" },
+            { french: "un auteur", english: "a male author" },
+            { french: "une auteure", english: "a female author" },
+            { french: "un écrivain", english: "a male writer" },
+            { french: "une écrivaine", english: "a female writer" },
+            { french: "une histoire", english: "a story" },
+            { french: "un magazine", english: "a magazine" }
+        ],
+        Le_Cinéma_et_La_Télévision: [
+            { french: "un genre", english: "a genre" },
+            { french: "une sorte de", english: "a type of" },
+            { french: "un réalisateur", english: "a male movie director" },
+            { french: "une réalisatrice", english: "a female movie director" },
+            { french: "une séance", english: "a showing" },
+            { french: "une histoire", english: "a story" },
+            { french: "un drame (psychologique)", english: "a (psychological) drama" },
+            { french: "un film d'aventures", english: "an adventure film" },
+            { french: "un film d'horreur", english: "a horror film" },
+            { french: "un film policier", english: "a crime movie" },
+            { french: "un film de science-fiction", english: "a science fiction film" },
+            { french: "une émission (de télévision)", english: "a (television) program" },
+            { french: "un documentaire", english: "a documentary" },
+            { french: "un feuilleton", english: "a soap opera" },
+            { french: "les informations", english: "the news (inf..)" },
+            { french: "un jeu télévisé", english: "a game show" },
+            { french: "les nouvelles", english: "the news (nou..)" },
+            { french: "un programme", english: "a program" },
+            { french: "un dessin animé", english: "a cartoon" },
+            { french: "la météo", english: "the weather" },
+            { french: "une publicité", english: "an advertisement" },
+            { french: "ancien(ne)", english: "old/ancient (m/f)" },
+            { french: "gratuit(e)", english: "free (m/f)" },
+            { french: "récent(e)", english: "recent (m/f)" },
+            { french: "à la télé", english: "on television" }
+        ],
+        Additional_Words: [
+            { french: "faire les musées", english: "to go to museums" },
+            { french: "les beaux arts", english: "fine arts" },
+            { french: "un chef-d'œuvre", english: "a masterpiece" }
+        ]
+    }
+}
+};
+
+        /* JS FROM script.js */
+        const selectionContainer = document.getElementById('selection-container');
+        const startQuizForm = document.getElementById('start-quiz-form');
+        const vocabListSelect = document.getElementById('vocab-list-select');
+        const subListSelectorWrapper = document.getElementById('sub-list-selector-wrapper');
+        const categoryCheckboxesContainer = document.getElementById('category-checkboxes');
+        const quizBox = document.getElementById('quiz-box');
+        const completionScreen = document.getElementById('completion-screen');
+        const progressCounter = document.getElementById('progress-counter');
+        const questionPrompt = document.getElementById('question-prompt');
+        const questionTerm = document.getElementById('question-term');
+        const answerForm = document.getElementById('answer-form');
+        const answerInput = document.getElementById('answer-input');
+        const checkButton = document.getElementById('check-button');
+        const hintButton = document.getElementById('hint-button');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const continuePrompt = document.getElementById('continue-prompt');
+        const restartButton = document.getElementById('restart-button');
+        const finalScore = document.getElementById('final-score');
+        const reviewSection = document.getElementById('review-section');
+        const wrongAnswersList = document.getElementById('wrong-answers-list');
+        const accentButtonsContainer = document.getElementById('accent-buttons');
+
+        let quizTerms = [], currentTerm = null, totalTermsInQuiz = 0, isWaitingForContinue = false, wronglyAnswered = [];
+        let lastWronglyAnswered = [];
+        let activeAccents = [];
+
+        function populateVocabListsDropdown() {
+            for (const key in vocabLists) {
+                vocabListSelect.add(new Option(vocabLists[key].name, key));
+            }
+        }
+
+        function updateCategoryCheckboxes() {
+            const selectedListKey = vocabListSelect.value;
+            const selectedList = vocabLists[selectedListKey];
+            categoryCheckboxesContainer.innerHTML = '';
+            if (selectedList && selectedList.categories) {
+                subListSelectorWrapper.style.display = 'block';
+                const selectAllDiv = document.createElement('div');
+                selectAllDiv.className = 'checkbox-item';
+                selectAllDiv.innerHTML = `<input type="checkbox" id="select-all-checkbox" checked><label for="select-all-checkbox">Select All</label>`;
+                categoryCheckboxesContainer.appendChild(selectAllDiv);
+                const separator = document.createElement('hr');
+                separator.style.border = 'none'; separator.style.borderTop = '1px solid rgba(255, 255, 255, 0.2)'; separator.style.margin = '8px 0';
+                categoryCheckboxesContainer.appendChild(separator);
+                for (const categoryKey in selectedList.categories) {
+                    const categoryName = categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1);
+                    const termCount = selectedList.categories[categoryKey].length;
+                    const checkboxDiv = document.createElement('div');
+                    checkboxDiv.className = 'checkbox-item';
+                    checkboxDiv.innerHTML = `<input type="checkbox" id="category-${categoryKey}" value="${categoryKey}" class="category-checkbox" checked><label for="category-${categoryKey}">${categoryName} (${termCount})</label>`;
+                    categoryCheckboxesContainer.appendChild(checkboxDiv);
+                }
+                document.getElementById('select-all-checkbox').addEventListener('change', handleSelectAllChange);
+                document.querySelectorAll('.category-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', handleCategoryCheckboxChange);
+                });
+            } else {
+                subListSelectorWrapper.style.display = 'none';
+            }
+        }
+
+        function handleSelectAllChange(event) {
+            const isChecked = event.target.checked;
+            document.querySelectorAll('.category-checkbox').forEach(checkbox => { checkbox.checked = isChecked; });
+        }
+
+        function handleCategoryCheckboxChange() {
+            const categoryCheckboxes = document.querySelectorAll('.category-checkbox');
+            const allChecked = Array.from(categoryCheckboxes).every(cb => cb.checked);
+            const selectAllCheckbox = document.getElementById('select-all-checkbox');
+            if (selectAllCheckbox) selectAllCheckbox.checked = allChecked;
+        }
+
+        function createAccentButtons(terms) {
+            accentButtonsContainer.innerHTML = '';
+            const allFrenchText = terms.map(term => term.french).join('');
+            const accentSet = new Set(allFrenchText.match(/[àâéèêëîïôûüùçœ]/g));
+            if (!accentSet || accentSet.size === 0) { activeAccents = []; return; }
+            activeAccents = Array.from(accentSet).sort();
+            activeAccents.forEach((accent, index) => {
+                const button = document.createElement('button');
+                button.type = 'button'; button.className = 'accent-btn'; button.dataset.char = accent;
+                button.innerHTML = `<sup>${index + 1}</sup> ${accent}`;
+                accentButtonsContainer.appendChild(button);
+            });
+        }
+
+        function insertAccent(char) {
+            const start = answerInput.selectionStart;
+            const end = answerInput.selectionEnd;
+            const text = answerInput.value;
+            answerInput.value = text.substring(0, start) + char + text.substring(end);
+            answerInput.focus();
+            answerInput.setSelectionRange(start + 1, start + 1);
+        }
+
+        function handleAccentButtonClick(event) {
+            const button = event.target.closest('.accent-btn');
+            if (button) insertAccent(button.dataset.char);
+        }
+
+        function handleAccentShortcut(event) {
+            const numKey = parseInt(event.key, 10);
+            if (!isNaN(numKey) && numKey >= 1 && numKey <= activeAccents.length) {
+                event.preventDefault();
+                insertAccent(activeAccents[numKey - 1]);
+            }
+        }
+
+        function handleQuizStart(event) {
+            event.preventDefault();
+            const selectedListKey = vocabListSelect.value;
+            let selectedTerms;
+            if (selectedListKey === 'review-wrong') {
+                selectedTerms = lastWronglyAnswered;
+            } else {
+                const list = vocabLists[selectedListKey];
+                if (list.categories) {
+                    const checkedCheckboxes = document.querySelectorAll('.category-checkbox:checked');
+                    if (checkedCheckboxes.length === 0) { alert('Please select at least one category.'); return; }
+                    selectedTerms = [];
+                    checkedCheckboxes.forEach(checkbox => {
+                        selectedTerms = selectedTerms.concat(list.categories[checkbox.value]);
+                    });
+                } else {
+                    selectedTerms = list.terms;
+                }
+            }
+            startGame(selectedTerms);
+        }
+
+        function startGame(selectedTerms) {
+            if (!selectedTerms || selectedTerms.length === 0) return;
+            quizTerms = [...selectedTerms];
+            totalTermsInQuiz = selectedTerms.length;
+            wronglyAnswered = [];
+            createAccentButtons(selectedTerms);
+            selectionContainer.style.display = 'none';
+            completionScreen.style.display = 'none';
+            quizBox.style.display = 'block';
+            nextQuestion();
+        }
+
+        function nextQuestion() {
+            if (quizTerms.length === 0) { endGame(); return; }
+            isWaitingForContinue = false;
+            feedbackMessage.innerHTML = '';
+            continuePrompt.style.display = 'none';
+            checkButton.textContent = 'Check';
+            answerInput.disabled = false;
+            hintButton.disabled = false;
+            answerInput.value = '';
+            progressCounter.textContent = `${totalTermsInQuiz - quizTerms.length + 1} / ${totalTermsInQuiz}`;
+            const randomIndex = Math.floor(Math.random() * quizTerms.length);
+            currentTerm = quizTerms[randomIndex];
+            questionPrompt.textContent = 'What is the French for...';
+            questionTerm.textContent = currentTerm.english;
+            answerInput.focus();
+        }
+
+        function checkAnswer(event) {
+            event.preventDefault();
+            if (isWaitingForContinue) { nextQuestion(); return; }
+            const userAnswer = answerInput.value.trim();
+            if (!userAnswer) return;
+            const correctAnswer = currentTerm.french;
+            const isCorrect = userAnswer.toLowerCase() === correctAnswer.toLowerCase();
+            if (isCorrect) {
+                feedbackMessage.innerHTML = `<span class="correct">Correct!</span>`;
+                quizTerms = quizTerms.filter(term => term.french !== currentTerm.french || term.english !== currentTerm.english);
+                answerInput.disabled = true;
+                hintButton.disabled = true;
+                setTimeout(nextQuestion, 700);
+            } else {
+                feedbackMessage.innerHTML = `<span class="incorrect">Incorrect. The answer is: <strong>${correctAnswer}</strong></span>`;
+                if (!wronglyAnswered.some(term => term.french === currentTerm.french && term.english === currentTerm.english)) {
+                    wronglyAnswered.push(currentTerm);
+                }
+                isWaitingForContinue = true;
+                answerInput.disabled = true;
+                hintButton.disabled = true;
+                checkButton.textContent = 'Continue';
+                continuePrompt.style.display = 'block';
+                checkButton.focus();
+            }
+        }
+
+        function showHint() {
+            if (!currentTerm || isWaitingForContinue) return;
+            const answer = currentTerm.french;
+            const firstLetter = answer.charAt(0);
+            const hint = firstLetter + answer.substring(1).replace(/[^\s]/g, '_');
+            feedbackMessage.innerHTML = `<span class="hint-message">Hint: Starts with '${firstLetter}'. (${hint})</span>`;
+            hintButton.disabled = true;
+            answerInput.focus();
+        }
+
+        function endGame() {
+            quizBox.style.display = 'none';
+            lastWronglyAnswered = [...wronglyAnswered];
+            const score = totalTermsInQuiz - wronglyAnswered.length;
+            finalScore.textContent = `You got ${score} / ${totalTermsInQuiz} correct.`;
+            const existingReviewOption = document.getElementById('review-option');
+            if (existingReviewOption) existingReviewOption.remove();
+            if (wronglyAnswered.length > 0) {
+                wrongAnswersList.innerHTML = '';
+                wronglyAnswered.forEach(term => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${term.french} — ${term.english}`;
+                    wrongAnswersList.appendChild(listItem);
+                });
+                reviewSection.style.display = 'block';
+                const reviewOption = new Option(`Review My ${wronglyAnswered.length} Wrong Answers`, 'review-wrong');
+                reviewOption.id = 'review-option';
+                vocabListSelect.prepend(reviewOption);
+            } else {
+                reviewSection.style.display = 'none';
+                finalScore.textContent += " Perfect score!";
+            }
+            completionScreen.style.display = 'flex';
+        }
+
+        function resetToSelection() {
+            completionScreen.style.display = 'none';
+            selectionContainer.style.display = 'block';
+            if (lastWronglyAnswered.length > 0 && document.getElementById('review-option')) {
+                vocabListSelect.value = 'review-wrong';
+            } else {
+                vocabListSelect.value = Object.keys(vocabLists)[0];
+            }
+            updateCategoryCheckboxes();
+            accentButtonsContainer.innerHTML = '';
+            activeAccents = [];
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateVocabListsDropdown();
+            updateCategoryCheckboxes(); 
+            startQuizForm.addEventListener('submit', handleQuizStart);
+            answerForm.addEventListener('submit', checkAnswer);
+            hintButton.addEventListener('click', showHint);
+            restartButton.addEventListener('click', resetToSelection);
+            accentButtonsContainer.addEventListener('click', handleAccentButtonClick);
+            answerInput.addEventListener('keydown', handleAccentShortcut);
+            vocabListSelect.addEventListener('change', updateCategoryCheckboxes);
+        });
+    </script>
 </body>
 </html>
+
+

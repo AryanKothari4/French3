@@ -466,10 +466,62 @@ const vocabLists = {
                 { french: "ça me fait rêver", english: "it makes me dream" },
                 { french: "ça me fait penser à", english: "it makes me think about" },
                 { french: "qu'en penses-tu?", english: "what do you think about it?" }
-            ],
-            Additional_Words: [
-                // Empty section for additional vocabulary that could be on the test
             ]
         }
+    },'lesArtsV2': {
+    name: "Les Arts V2",
+    categories: {
+        litterature: [
+            { french: "la bande dessinée", english: "a comic strip" },
+            { french: "le sentiment", english: "the feeling" },
+            { french: "la poésie", english: "poetry" },
+            { french: "la pensée", english: "the thought" },
+            { french: "un poème", english: "a poem" },
+            { french: "un roman", english: "a novel" },
+            { french: "un conte", english: "a tale" },
+            { french: "littéraire", english: "literary" },
+            { french: "un dramaturge", english: "a male playwright" },
+            { french: "une dramaturge", english: "a female playwright" },
+            { french: "publier", english: "to publish" },
+            { french: "un auteur", english: "a male author" },
+            { french: "une auteure", english: "a female author" },
+            { french: "un écrivain", english: "a male writer" },
+            { french: "une écrivaine", english: "a female writer" },
+            { french: "une histoire", english: "a story" },
+            { french: "un magazine", english: "a magazine" }
+        ],
+        cinema_television: [
+            { french: "un genre", english: "a genre" },
+            { french: "une sorte de", english: "a type of" },
+            { french: "un réalisateur", english: "a male movie director" },
+            { french: "une réalisatrice", english: "a female movie director" },
+            { french: "une séance", english: "a showing" },
+            { french: "une histoire", english: "a story" },
+            { french: "un drame (psychologique)", english: "a (psychological) drama" },
+            { french: "un film d'aventures", english: "an adventure film" },
+            { french: "un film d'horreur", english: "a horror film" },
+            { french: "un film policier", english: "a crime movie" },
+            { french: "un film de science-fiction", english: "a science fiction film" },
+            { french: "une émission (de télévision)", english: "a (television) program" },
+            { french: "un documentaire", english: "a documentary" },
+            { french: "un feuilleton", english: "a soap opera" },
+            { french: "les informations", english: "the news (inf..)" },
+            { french: "un jeu télévisé", english: "a game show" },
+            { french: "les nouvelles", english: "the news (nou..)" },
+            { french: "un programme", english: "a program" },
+            { french: "un dessin animé", english: "a cartoon" },
+            { french: "la météo", english: "the weather" },
+            { french: "une publicité", english: "an advertisement" },
+            { french: "ancien(ne)", english: "old/ancient (m/f)" },
+            { french: "gratuit(e)", english: "free (m/f)" },
+            { french: "récent(e)", english: "recent (m/f)" },
+            { french: "à la télé", english: "on television" }
+        ],
+        Additional_Words: [
+            { french: "faire les musées", english: "to go to museums" },
+            { french: "les beaux arts", english: "fine arts" },
+            { french: "un chef-d'œuvre", english: "a masterpiece" }
+        ]
     }
+}
 };
